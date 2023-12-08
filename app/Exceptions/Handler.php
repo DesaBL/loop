@@ -27,4 +27,19 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, \Throwable $exception) {
+
+        if ($exception instanceof PaymentFailed) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Something went wrong. Please try again later"
+                ],
+                503
+            );
+        }
+
+        return parent::render($request, $exception);
+    }
 }
